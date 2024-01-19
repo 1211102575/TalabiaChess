@@ -42,6 +42,15 @@ public class BoardView extends JPanel {
         }
     }
 
+    public void flip(Board board) {
+        removeAll();
+        for (int i = 5; i >= 0; i = i - 1) {
+            for (int j = 6; j >=0; j = j - 1) {
+                add(squares[i][j]);
+            }
+        }
+    }
+
     //mv
     public void showAvailableMove(ArrayList<int[]> availableList) {
         for (int[] square : availableList) {
