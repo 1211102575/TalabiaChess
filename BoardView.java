@@ -5,93 +5,80 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 
-public class BoardView extends JPanel {
-    private JButton[][] squares;
-    private Board board;
+public class BoardView extends JFrame {
+    private JButton[][] cellButtons;
+    private BoardController controller;
+    private JButton selectedCellButton;
     
-    public BoardView(Board board) {
-        this.board = board;
+    public BoardView(BoardController controller) {
+        this.controller = controller;
         setLayout(new GridLayout(6,7));
-        squares = new JButton[6][7];
-        for (int i = 0; i < 6; i++) {
-            for (int j = 0; j < 7; j++) {
-                squares[i][j] = new JButton();
-                squares[i][j].setPreferredSize(new Dimension(100, 100));
-                squares[i][j].setBackground(Color.WHITE);
-                squares[i][j].setBorder(new LineBorder(Color.GRAY));
-                squares[i][j].addActionListener(new SquareListener(i, j));
-                add(squares[i][j]);
-            }
-        }
-        update(board);
-        //mv
-        board.setSquares(squares);
+        initiateBoard();
     }
 
-    public void update(Board board) {
+    public void initiateBoard() {
+        cellButtons = new JButton[6][7];
+        for (int i = 0; i < 6; i++) {
+            for (int j = 0; j < 7; j++) {
+                cellButtons[i][j] = new JButton();
+                cellButtons[i][j].setPreferredSize(new Dimension(100, 100));
+                cellButtons[i][j].setBackground(Color.WHITE);
+                cellButtons[i][j].setBorder(new LineBorder(Color.GRAY));
+                int buttoni = i;
+                int buttonj = j;
+                cellButtons[i][j].addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        controller.handleCellButtonClick(buttoni, buttonj);
+                        selectedCellButton = cellButtons[buttoni][buttonj];
+                    }
+                });
+                add(cellButtons[i][j]);
+            }
+        }
+        updateIcon();
+    }
+
+    public void updateIcon() {
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j <7; j++) {
-                Piece piece = board.getPiece(i, j);
+                Piece piece = controller.getPiece(i, j);
                 if (piece != null) {
-                    squares[i][j].setIcon(piece.getIcon());
+                    cellButtons[i][j].setIcon(piece.getIcon());
                 }
                 else {
-                    squares[i][j].setIcon(null);
+                    cellButtons[i][j].setIcon(null);
                 }
             }       
         }
     }
 
-    public void flip(Board board) {
+    public void flip() {
         removeAll();
         for (int i = 5; i >= 0; i = i - 1) {
             for (int j = 6; j >=0; j = j - 1) {
-                add(squares[i][j]);
+                add(cellButtons[i][j]);
             }
         }
     }
 
-    //mv
-    public void showAvailableMove(ArrayList<int[]> availableList) {
-        for (int[] square : availableList) {
-            squares[square[0]][square[1]].setBackground(new Color(0, 255, 0));
+    public void setSelectBorder() {
+        selectedCellButton.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+    }
+    public void clearSelectedBorder() {
+        selectedCellButton.setBorder(new LineBorder(Color.GRAY));
+    }
+
+    public void showAvailableMove(ArrayList<Move> availableList) {
+        for (Move square : availableList) {
+            cellButtons[square.start.getX()][square.start.getY()].setBackground(new Color(0, 255, 0));
         }
     }
     public void clearAvailableMove() {
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j <7; j++) {
-                squares[i][j].setBackground(Color.WHITE);
+                cellButtons[i][j].setBackground(Color.WHITE);
             }       
-        }
-    }
-
-    private class SquareListener implements ActionListener {
-        private int x;
-        private int y;
-
-        public SquareListener(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
-
-        public void actionPerformed(ActionEvent e) {
-            JButton previousSelectedSquare = board.getSelectedSquare();
-            //mv
-            board.squareControl(x, y);
-            JButton currentSelectedSquare = board.getSelectedSquare();
-
-            if (previousSelectedSquare != currentSelectedSquare) {
-                if (previousSelectedSquare != null) {
-                    previousSelectedSquare.setBorder(new LineBorder(Color.GRAY)); 
-                    clearAvailableMove(); 
-                }
-                if (currentSelectedSquare != null) {
-                    currentSelectedSquare.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
-                    //mv
-                    showAvailableMove(board.getAvailableMoves(x, y));
-                }
-                update(board);
-            }
         }
     }
 }
