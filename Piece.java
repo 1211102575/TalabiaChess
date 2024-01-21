@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public abstract class Piece {
     private boolean yellow = false;  // true means yellow, false means blue
 
@@ -9,7 +11,5 @@ public abstract class Piece {
         return this.yellow;
     }
 
-    public abstract boolean canMove(Board board, Cell start, Cell end);
-
-    //public abstract void changeState(Piece piece);
+    public abstract ArrayList<Move> getAllMoves(Board board, Cell start);
 }

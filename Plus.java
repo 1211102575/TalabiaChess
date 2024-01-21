@@ -1,30 +1,66 @@
+import java.util.*;
+
 public class Plus extends Piece{
-    public Plus(String type, int x, int y, boolean isWhite){
-        super(type,x,y,isWhite);
+
+    public Plus(boolean yellow){
+        super(yellow);
     }
     
-    public boolean canMove(Board board, Piece piece, int newX, int newY){
-        //not for enemy(havenet complete)
-        if(board.getPiece(newX, newY) != null){
-            return false ;
-        }
-        else if((newX != piece.getX() && newY != piece.getY() ||newX == piece.getX() && newY == piece.getY())){
-            return false;
-        }
-        else{
-            //change the location on the board first to delete the old piece
-            board.setPiece(piece, newX, newY);
-            //change location
-            piece.setX (newX);
-            piece.setY(newY);
-            return true;
-        }
+    //Get all moves of piece from current position
+    public ArrayList<Move> getAllMoves(Board board, Cell start) {
+        ArrayList<Move> moves = new ArrayList<>(); 
+
+        moves.addAll(getMove(board, start, 1, 0));
+        moves.addAll(getMove(board, start, -1, 0));
+        moves.addAll(getMove(board, start, 0, 1));
+        moves.addAll(getMove(board, start, 0, -1));
+
+        return moves;
     }
-    public void changeState(Piece piece,int turn, int x , int y ){
-        if (turn % 2 == 0 ){
-            piece = new Time("time", piece.getX(), piece.getY(), piece.getIsWhite()) ;
+
+    //Get moves in direction x, y
+    public ArrayList<Move> getMove(Board board, Cell start, int x, int y) {
+        //Initiallize variables
+        ArrayList<Move> moves = new ArrayList<>(); 
+        int currentX = start.getX();
+        int currentY = start.getY();
+        boolean cond = true;
+        Cell currentCell;
+        Piece pieceInCell;
+        Cell moveToCell;
+
+        //Start finding
+        while (cond) {
+            //Move in direction
+            currentX += x;
+            currentY += y;
+
+            //Get information
+            currentCell = board.getCell(currentX, currentY);
+            pieceInCell = currentCell.getPiece();
+            //This piece move to cell
+            moveToCell = new Cell(currentX, currentY, this);
+
+            //Out of bounds, then break out
+            if (currentX < 0 || currentX > 6 || currentY < 0 || currentY > 5) {
+                break;
+            }
+            
+            //If piece in cell not null
+            if (pieceInCell != null) {
+                if (pieceInCell.isYellow() == this.isYellow()) {  //Friendly piece
+                    break;
+                }
+
+                moves.add(new Move(this.isYellow(), start, moveToCell));  //Take enemy piece
+                break;
+            }
+
+            //If current cell empty
+            moves.add(new Move(this.isYellow(), start, moveToCell));
         }
+
+        return moves;
     }
-}  
-    
+}
     

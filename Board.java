@@ -5,17 +5,13 @@ public class Board {
         this.resetBoard();
     }
 
-    public Cell getCell(int x, int y) throws Exception {
-        if (x < 0 || x > 6 || y < 0 || y > 5) {
-            throw new Exception("Index greater than board size"); 
-        }
-
+    public Cell getCell(int x, int y) {
         return cells[x][y];
     }
 
     public void resetBoard() {
         cells[0][0] = new Cell(0, 0, new Plus(false));
-        cells[1][0] = new Cell(1, 0, new Hour(false));
+        //cells[1][0] = new Cell(1, 0, new Hour(false));
 
         for (int i = 0; i <= 7; i++) {
             for (int j = 2; j <= 3; j++) {
