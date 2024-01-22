@@ -10,4 +10,32 @@ public class Move {
         this.end = end;
         this.movePiece = start.getPiece();
     }
+
+    //Setters
+    public void setYellow(boolean yellow) {
+        this.yellow = yellow;
+    }
+    public void setStart(Cell start) {
+        this.start = start;
+    }
+    public void setEnd(Cell end) {
+        this.end = end;
+    }
+    public void setMovePiece(Piece movePiece) {
+        this.movePiece = movePiece;
+    }
+
+    //Getters
+    public boolean getYellow() {
+        return yellow;
+    }
+    public Cell getStart() {
+        return start;
+    }
+    public Cell getEnd() {
+        return end;
+    }
+    public Piece getMovePiece() {
+        return movePiece;
+    }
 }
