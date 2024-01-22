@@ -1,9 +1,19 @@
 import java.util.ArrayList;
 
 public class PointPiece extends Piece {
+    private boolean directionUp = false; // true is up, false is down
 
-    public PointPiece(boolean yellow) {
+    public PointPiece(boolean yellow, boolean directionUp) {
         super(yellow);
+        this.directionUp = directionUp;
+    }
+
+    // Setters and Getters for direction
+    public void setDirectionUp(boolean directionUp) {
+        this.directionUp = directionUp;
+    }
+    public boolean getDirectionUp() {
+        return directionUp;
     }
 
     // Get all moves of the piece from the current position
