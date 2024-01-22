@@ -1,8 +1,8 @@
 import java.util.*;
 
-public class Plus extends Piece{
+public class PlusPiece extends Piece{
 
-    public Plus(boolean yellow){
+    public PlusPiece(boolean yellow){
         super(yellow);
     }
     

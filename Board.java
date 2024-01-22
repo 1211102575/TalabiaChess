@@ -10,7 +10,7 @@ public class Board {
     }
 
     public void resetBoard() {
-        cells[0][0] = new Cell(0, 0, new Plus(false));
+        cells[0][0] = new Cell(0, 0, new PlusPiece(false));
         //cells[1][0] = new Cell(1, 0, new Hour(false));
 
         for (int i = 0; i <= 7; i++) {
