@@ -46,6 +46,11 @@ public class HomePage {
         exitButton.setFocusPainted(false);
         exitButton.setBorderPainted(false);
         exitButton.setFont(forteFont);
+
+        //create actionListener for buttons
+        newGameButton.addActionListener(new NewGameActionListener());
+        loadGameButton.addActionListener(new LoadGameActionListener());
+        exitButton.addActionListener(new ExitActionListener());
         
 
         //create a panel on center and put the tittle and buttons inside
@@ -74,6 +79,36 @@ public class HomePage {
         });
         firstPage.setVisible(true);
     }
+    ///////////////////create ctionPerformed////////////////////////////
+    public class ExitActionListener implements ActionListener{
+
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            System.exit(0);
+            
+        }
+    }
+    public class NewGameActionListener implements ActionListener{
+
+        NewGameActionListener(){};
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            // start game code
+            
+        }
+    }
+
+    public class LoadGameActionListener implements ActionListener{
+
+        LoadGameActionListener(){};
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            // load game code
+            
+        }
+    }
+    ///////////////////////////////////////////////////////////////////////////
 
     public static void main (String[] args){
         new HomePage();
