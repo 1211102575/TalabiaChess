@@ -3,7 +3,11 @@ import javax.swing.*;
 import java.awt.event.*;
 
 public class HomePage {
-    HomePage(){
+    HomePageController controller = new HomePageController();
+
+    HomePage(HomePageController controller){
+        this.controller = controller;
+
         JFrame firstPage = new JFrame("Talabia Chess");
         firstPage.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         firstPage.setSize(new Dimension(600,600));
@@ -48,9 +52,28 @@ public class HomePage {
         exitButton.setFont(forteFont);
 
         //create actionListener for buttons
-        newGameButton.addActionListener(new NewGameActionListener());
-        loadGameButton.addActionListener(new LoadGameActionListener());
-        exitButton.addActionListener(new ExitActionListener());
+        
+        newGameButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.handleNewGameButton();
+            }
+        });
+
+        loadGameButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.handleLoadGameButton();
+            }
+        });
+
+
+        exitButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.handleExitButton();
+            }
+        });
         
 
         //create a panel on center and put the tittle and buttons inside
@@ -79,38 +102,5 @@ public class HomePage {
         });
         firstPage.setVisible(true);
     }
-    ///////////////////create ctionPerformed////////////////////////////
-    public class ExitActionListener implements ActionListener{
 
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            System.exit(0);
-            
-        }
-    }
-    public class NewGameActionListener implements ActionListener{
-
-        NewGameActionListener(){};
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            // start game code
-            
-        }
-    }
-
-    public class LoadGameActionListener implements ActionListener{
-
-        LoadGameActionListener(){};
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            // load game code
-            
-        }
-    }
-    ///////////////////////////////////////////////////////////////////////////
-
-    public static void main (String[] args){
-        new HomePage();
-    }
 }
