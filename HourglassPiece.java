@@ -10,14 +10,14 @@ public class HourglassPiece extends Piece {
     public ArrayList<Move> getAllMoves(Board board, Cell start) {
         ArrayList<Move> moves = new ArrayList<>();
 
-        moves.addAll(getMove(board, start, 3, 2));
-        moves.addAll(getMove(board, start, -3, -2));
-        moves.addAll(getMove(board, start, 3, -2));
-        moves.addAll(getMove(board, start, -3, 2));
-        moves.addAll(getMove(board, start, 2, 3));
-        moves.addAll(getMove(board, start, -2, -3));
-        moves.addAll(getMove(board, start, 2, -3));
-        moves.addAll(getMove(board, start, -2, 3));
+        moves.addAll(getMove(board, start, 2, 1));
+        moves.addAll(getMove(board, start, -2, -1));
+        moves.addAll(getMove(board, start, 2, -1));
+        moves.addAll(getMove(board, start, -2, 1));
+        moves.addAll(getMove(board, start, 1, 2));
+        moves.addAll(getMove(board, start, -1, -2));
+        moves.addAll(getMove(board, start, 1, -2));
+        moves.addAll(getMove(board, start, -1, 2));
 
         return moves;
     }
