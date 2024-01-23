@@ -20,9 +20,15 @@ public class PointPiece extends Piece {
     public ArrayList<Move> getAllMoves(Board board, Cell start) {
         ArrayList<Move> moves = new ArrayList<>();
 
-        // Point piece can only move forward, 1 or 2 steps
-        moves.addAll(getMove(board, start, 1, 0));
-        moves.addAll(getMove(board, start, 2, 0));
+        // Point piece can only move forward, 1 or 2 steps, depending on direction
+        if (directionUp) {
+            moves.addAll(getMove(board, start, 0, 1));
+            moves.addAll(getMove(board, start, 0, 2));
+        }
+        else {
+            moves.addAll(getMove(board, start, 0, -1));
+            moves.addAll(getMove(board, start, 0, -2));
+        }
 
         return moves;
     }
