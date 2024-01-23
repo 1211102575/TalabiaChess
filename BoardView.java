@@ -9,45 +9,50 @@ public class BoardView extends JFrame {
     private JButton[][] cellButtons;
     private BoardController controller;
     private JButton selectedCellButton;
+    private final PieceIconVisitor visitor = new PieceIconVisitor();
     
-    public BoardView(BoardController controller) {
-        this.controller = controller;
+    public BoardView() {
         setLayout(new GridLayout(6,7));
-        initiateBoard();
+        setTitle("Talabia Chess");
+        setSize(600, 700);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+    }
+
+    public void setController(BoardController controller) {
+        this.controller = controller;
     }
 
     public void initiateBoard() {
         cellButtons = new JButton[6][7];
-        for (int i = 0; i < 6; i++) {
-            for (int j = 0; j < 7; j++) {
-                cellButtons[i][j] = new JButton();
-                cellButtons[i][j].setPreferredSize(new Dimension(100, 100));
-                cellButtons[i][j].setBackground(Color.WHITE);
-                cellButtons[i][j].setBorder(new LineBorder(Color.GRAY));
-                int buttoni = i;
-                int buttonj = j;
-                cellButtons[i][j].addActionListener(new ActionListener() {
+        for (int row = 0; row < 6; row++) {
+            for (int col = 0; col < 7; col++) {
+                cellButtons[row][col] = new JButton();
+                cellButtons[row][col].setPreferredSize(new Dimension(100, 100));
+                cellButtons[row][col].setBackground(Color.WHITE);
+                cellButtons[row][col].setBorder(new LineBorder(Color.GRAY));
+                int buttonRow = row;
+                int buttonCol = col;
+                cellButtons[row][col].addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        controller.handleCellButtonClick(buttoni, buttonj);
-                        selectedCellButton = cellButtons[buttoni][buttonj];
+                        selectedCellButton = cellButtons[buttonRow][buttonCol];
+                        controller.handleCellButtonClick(buttonRow, buttonCol);
                     }
                 });
-                add(cellButtons[i][j]);
+                add(cellButtons[row][col]);
             }
         }
         updateIcon();
+        setVisible(true);
     }
 
     public void updateIcon() {
-        for (int i = 0; i < 6; i++) {
-            for (int j = 0; j <7; j++) {
-                Piece piece = controller.getPiece(i, j);
-                if (piece != null) {
-                    cellButtons[i][j].setIcon(piece.getIcon());
-                }
-                else {
-                    cellButtons[i][j].setIcon(null);
+        for (int row = 0; row < 6; row++) {
+            for (int col = 0; col <7; col++) {
+                if (controller.getPiece(row, col) != null) {
+                    controller.getPiece(row, col).accept(visitor);
+                    Icon icon = visitor.getIcon();
+                    cellButtons[row][col].setIcon(icon);
                 }
             }       
         }
@@ -55,9 +60,9 @@ public class BoardView extends JFrame {
 
     public void flip() {
         removeAll();
-        for (int i = 5; i >= 0; i = i - 1) {
-            for (int j = 6; j >=0; j = j - 1) {
-                add(cellButtons[i][j]);
+        for (int row = 5; row >= 0; row = row - 1) {
+            for (int col = 6; col >=0; col = col - 1) {
+                add(cellButtons[row][col]);
             }
         }
     }
@@ -66,18 +71,23 @@ public class BoardView extends JFrame {
         selectedCellButton.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
     }
     public void clearSelectedBorder() {
-        selectedCellButton.setBorder(new LineBorder(Color.GRAY));
+        for (int row = 0; row < 6; row++) {
+            for (int col = 0; col < 7; col++) {
+                cellButtons[row][col].setBackground(Color.WHITE);
+                cellButtons[row][col].setBorder(new LineBorder(Color.GRAY));
+            }
+        }
     }
 
     public void showAvailableMove(ArrayList<Move> availableList) {
         for (Move square : availableList) {
-            cellButtons[square.start.getX()][square.start.getY()].setBackground(new Color(0, 255, 0));
+            cellButtons[square.getEnd().getRow()][square.getEnd().getCol()].setBackground(new Color(0, 255, 0));
         }
     }
     public void clearAvailableMove() {
-        for (int i = 0; i < 6; i++) {
-            for (int j = 0; j <7; j++) {
-                cellButtons[i][j].setBackground(Color.WHITE);
+        for (int row = 0; row < 6; row++) {
+            for (int col = 0; col <7; col++) {
+                cellButtons[row][col].setBackground(Color.WHITE);
             }       
         }
     }
