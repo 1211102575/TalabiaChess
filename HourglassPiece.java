@@ -22,16 +22,16 @@ public class HourglassPiece extends Piece {
         return moves;
     }
 
-    // Get moves in direction x, y
-    public ArrayList<Move> getMove(Board board, Cell start, int x, int y) {
+    // Get moves in direction row, col
+    public ArrayList<Move> getMove(Board board, Cell start, int row, int col) {
         ArrayList<Move> moves = new ArrayList<>();
-        int currentX = start.getX() + x;
-        int currentY = start.getY() + y;
+        int currentRow = start.getRow() + row;
+        int currentCol = start.getCol() + col;
 
         // Check if the move is within the board bounds
-        if (currentX >= 0 && currentX <= 6 && currentY >= 0 && currentY <= 5) {
-            Cell moveToCell = new Cell(currentX, currentY, this);
-            Piece pieceInCell = board.getCell(currentX, currentY).getPiece();
+        if (currentRow >= 0 && currentRow <= 5 && currentCol >= 0 && currentCol <= 6) {
+            Cell moveToCell = new Cell(currentRow, currentCol, this);
+            Piece pieceInCell = board.getCell(currentRow, currentCol).getPiece();
 
             // Check if the destination cell is empty or has an enemy piece
             if (pieceInCell == null || pieceInCell.isYellow() != this.isYellow()) {

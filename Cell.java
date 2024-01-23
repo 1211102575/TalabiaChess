@@ -1,11 +1,11 @@
 public class Cell {
-    private int x;
-    private int y;
+    private int row;
+    private int col;
     private Piece piece;
 
-    public Cell(int x, int y, Piece p) {
-        this.x = x;
-        this.y = y;
+    public Cell(int row, int col, Piece p) {
+        this.row = row;
+        this.col = col;
         this.piece = p;
     }
 
@@ -18,10 +18,10 @@ public class Cell {
     }
 
     //get for coordinates
-    public int getX() {
-        return this.x;
+    public int getRow() {
+        return this.row;
     }
-    public int getY() {
-        return this.y;
+    public int getCol() {
+        return this.col;
     }
 }

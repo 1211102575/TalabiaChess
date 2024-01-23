@@ -18,12 +18,12 @@ public class PlusPiece extends Piece{
         return moves;
     }
 
-    //Get moves in direction x, y
-    public ArrayList<Move> getMove(Board board, Cell start, int x, int y) {
+    //Get moves in direction row, col
+    public ArrayList<Move> getMove(Board board, Cell start, int row, int col) {
         //Initiallize variables
         ArrayList<Move> moves = new ArrayList<>(); 
-        int currentX = start.getX();
-        int currentY = start.getY();
+        int currentRow = start.getRow();
+        int currentCol = start.getCol();
         boolean cond = true;
         Cell currentCell;
         Piece pieceInCell;
@@ -32,17 +32,17 @@ public class PlusPiece extends Piece{
         //Start finding
         while (cond) {
             //Move in direction
-            currentX += x;
-            currentY += y;
+            currentRow += row;
+            currentCol += col;
 
             //Get information
-            currentCell = board.getCell(currentX, currentY);
+            currentCell = board.getCell(currentRow, currentCol);
             pieceInCell = currentCell.getPiece();
             //This piece move to cell
-            moveToCell = new Cell(currentX, currentY, this);
+            moveToCell = new Cell(currentRow, currentCol, this);
 
             //Out of bounds, then break out
-            if (currentX < 0 || currentX > 6 || currentY < 0 || currentY > 5) {
+            if (currentRow < 0 || currentRow > 5 || currentCol < 0 || currentCol > 6) {
                 break;
             }
             

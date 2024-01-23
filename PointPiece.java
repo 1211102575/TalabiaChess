@@ -33,11 +33,11 @@ public class PointPiece extends Piece {
         return moves;
     }
 
-    // Get moves in direction x, y
-    public ArrayList<Move> getMove(Board board, Cell start, int x, int y) {
+    // Get moves in direction row, col
+    public ArrayList<Move> getMove(Board board, Cell start, int row, int col) {
         ArrayList<Move> moves = new ArrayList<>();
-        int currentX = start.getX() + x;
-        int currentY = start.getY() + y;
+        int currentX = start.getRow() + row;
+        int currentY = start.getCol() + col;
 
         // Check if the move is within the board bounds
         if (isValidMove(currentX, currentY)) {
@@ -54,8 +54,8 @@ public class PointPiece extends Piece {
     }
 
     // Check if the move is within the board bounds
-    private boolean isValidMove(int x, int y) {
-        return x >= 0 && x <= 6 && y >= 0 && y <= 5;
+    private boolean isValidMove(int row, int col) {
+        return row >= 0 && row <= 5 && col >= 0 && col <= 6;
     }
 }
 
