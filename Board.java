@@ -8,6 +8,9 @@ public class Board {
     public Cell getCell(int row, int col) {
         return cells[row][col];
     }
+    public void setCell(int row, int col, Cell cell) {
+        this.cells[row][col] = cell;
+    }
 
     public void resetBoard() {
         // Yellow bottom row pieces
