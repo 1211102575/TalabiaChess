@@ -12,4 +12,6 @@ public abstract class Piece {
     }
 
     public abstract ArrayList<Move> getAllMoves(Board board, Cell start);
+
+    public abstract void accept(PieceVisitor visitor);
 }
