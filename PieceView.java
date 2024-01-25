@@ -1,15 +1,15 @@
 import javax.swing.Icon;
-import javax.swing.JButton;
 
-public class PieceView extends JButton{
-    private Piece piece;
-
-    public PieceView() {
-    }
+public class PieceView{
+    private Icon icon;
 
     public PieceView(Piece piece) {
-        this.piece = piece;
-        setIcon(piece.getIcon());
+        PieceIconVisitor visitor = new PieceIconVisitor();
+        piece.accept(visitor);
+        icon = visitor.getIcon();
     }
 
+    public Icon getIcon() {
+        return icon;
+    }
 }
