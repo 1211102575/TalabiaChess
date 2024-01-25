@@ -41,5 +41,9 @@ public class HourglassPiece extends Piece {
 
         return moves;
     }
+    
+    public void accept(PieceVisitor visitor) {
+        visitor.visit(this);
+    }
 }
 
