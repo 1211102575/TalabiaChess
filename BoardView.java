@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
 import java.awt.*;
@@ -9,14 +10,38 @@ public class BoardView extends JFrame {
     private JButton[][] cellButtons;
     private BoardController controller;
     private JButton selectedCellButton;
+    private JPanel centerPanel;
+    private JPanel board;
+    private JPanel boardContainer;
+
     private final PieceIconVisitor visitor = new PieceIconVisitor();
     
     public BoardView() {
-        setLayout(new GridLayout(6,7));
+        setLayout(new BorderLayout());
         setTitle("Talabia Chess");
         setSize(600, 700);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+
+        board = new JPanel();
+        board.setPreferredSize(new Dimension(750,720));
+        board.setLayout(new GridLayout(6,7));
+        board.setBorder(new EmptyBorder(20,20,20,20));
+
+        boardContainer = new JPanel();
+        boardContainer.setLayout(new FlowLayout());
+        boardContainer.add(board);
+
+        // centerPanel = new JPanel();
+        // centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.X_AXIS));
+        // centerPanel.add(boardContainer);
+        // add(centerPanel, BorderLayout.CENTER);
+        add(boardContainer,BorderLayout.CENTER);
+
+
     }
+
+    
+
 
     public void setController(BoardController controller) {
         this.controller = controller;
@@ -26,6 +51,7 @@ public class BoardView extends JFrame {
         cellButtons = new JButton[6][7];
         for (int row = 0; row < 6; row++) {
             for (int col = 0; col < 7; col++) {
+
                 cellButtons[row][col] = new JButton();
                 cellButtons[row][col].setPreferredSize(new Dimension(100, 100));
                 cellButtons[row][col].setBackground(Color.WHITE);
@@ -39,7 +65,7 @@ public class BoardView extends JFrame {
                         controller.handleCellButtonClick(buttonRow, buttonCol);
                     }
                 });
-                add(cellButtons[row][col]);
+                board.add(cellButtons[row][col]);
             }
         }
         updateIcon();
