@@ -41,4 +41,8 @@ public class SunPiece extends Piece {
 
         return moves;
     }
+
+    public void accept(PieceVisitor visitor) {
+        visitor.visit(this);
+    }
 }
