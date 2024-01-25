@@ -22,12 +22,12 @@ public class PointPiece extends Piece {
 
         // Point piece can only move forward, 1 or 2 steps, depending on direction
         if (directionUp) {
-            moves.addAll(getMove(board, start, 0, 1));
-            moves.addAll(getMove(board, start, 0, 2));
+            moves.addAll(getMove(board, start, -1, 0));
+            moves.addAll(getMove(board, start, -2, 0));
         }
         else {
-            moves.addAll(getMove(board, start, 0, -1));
-            moves.addAll(getMove(board, start, 0, -2));
+            moves.addAll(getMove(board, start, 1, 0));
+            moves.addAll(getMove(board, start, 2, 0));
         }
 
         return moves;
