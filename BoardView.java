@@ -19,6 +19,7 @@ public class BoardView extends JFrame {
     private JButton saveButton ;
     private JButton loadButton ; 
     private JButton exitButton ;
+    private boolean flipped = false;
 
     private final PieceIconVisitor visitor = new PieceIconVisitor();
     
@@ -128,6 +129,14 @@ public class BoardView extends JFrame {
         for (int row = 0; row < 6; row++) {
             for (int col = 0; col <7; col++) {
                 if (controller.getPiece(row, col) != null) {
+                    if (flipped) {
+                        if (controller.getPiece(row, col) instanceof PointPiece) {
+                            visitor.visitFliped((PointPiece) controller.getPiece(row, col));
+                            Icon icon = visitor.getIcon();
+                            cellButtons[row][col].setIcon(icon);
+                            continue;
+                        }
+                    }
                     controller.getPiece(row, col).accept(visitor);
                     Icon icon = visitor.getIcon();
                     cellButtons[row][col].setIcon(icon);
@@ -140,11 +149,23 @@ public class BoardView extends JFrame {
     }
 
     public void flip() {
-        removeAll();
-        for (int row = 5; row >= 0; row = row - 1) {
-            for (int col = 6; col >=0; col = col - 1) {
-                add(cellButtons[row][col]);
+        board.removeAll();
+        if (!flipped) {
+            for (int row = 5; row >= 0; row = row - 1) {
+                for (int col = 6; col >=0; col = col - 1) {
+                    board.add(cellButtons[row][col]);
+                    
+                }
             }
+            flipped = true;
+        }
+        else {
+            for (int row = 0; row < 6; row++) {
+                for (int col = 0; col < 7; col++) {
+                    board.add(cellButtons[row][col]);
+                }
+            }
+            flipped = false;
         }
     }
 
