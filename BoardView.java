@@ -39,23 +39,22 @@ public class BoardView extends JFrame {
         boardContainer.setLayout(new FlowLayout()); // floatlayout : not resize the board no matter window is maximized/ minimizied
         boardContainer.add(board);
         boardContainer.setBackground(new Color(117, 95, 62 ));
-
-        leftPanel = new JPanel();
-
+        // boardContainer.setAlignmentX(JComponent.CENTER_ALIGNMENT);
+        // boardContainer.setAlignmentY(JComponent.CENTER_ALIGNMENT);
 
         //create three buttons on the right side.
         Dimension buttonSize = new Dimension(100,50);
         saveButton = new JButton("Save");
-        saveButton.setPreferredSize(buttonSize);
-        saveButton.setAlignmentX(JComponent.CENTER_ALIGNMENT);
+        saveButton.setMaximumSize(buttonSize);
+        // saveButton.setAlignmentX(JComponent.CENTER_ALIGNMENT);
 
         loadButton = new JButton("Load");
-        loadButton.setPreferredSize(buttonSize);
-        loadButton.setAlignmentX(JComponent.CENTER_ALIGNMENT);
+        loadButton.setMaximumSize(buttonSize);
+        // loadButton.setAlignmentX(JComponent.CENTER_ALIGNMENT);
 
         exitButton = new JButton("Exit");
-        exitButton.setPreferredSize(buttonSize);
-        exitButton.setAlignmentX(JComponent.CENTER_ALIGNMENT);
+        exitButton.setMaximumSize(buttonSize);
+        // exitButton.setAlignmentX(JComponent.CENTER_ALIGNMENT);
 
         buttonPanel = new JPanel();
         buttonPanel.setOpaque(false);
@@ -75,18 +74,18 @@ public class BoardView extends JFrame {
         centerPanel.setBackground(new Color(117, 95, 62 ));
         centerPanel.setPreferredSize(new Dimension(1000,900));
         
-        // centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.X_AXIS));
-        // centerPanel.add(Box.createRigidArea(new Dimension (300,0)));
-        // centerPanel.add(boardContainer);
-        // centerPanel.add(Box.createRigidArea(new Dimension (200,0)));
-        // centerPanel.add(buttonPanel);
-        // add(centerPanel,BorderLayout.CENTER);
+        centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.X_AXIS));
+        centerPanel.add(Box.createRigidArea(new Dimension (300,0)));
+        centerPanel.add(boardContainer);
+        centerPanel.add(Box.createRigidArea(new Dimension (200,0)));
+        centerPanel.add(buttonPanel);
+        add(centerPanel,BorderLayout.CENTER);
 
-        centerPanel.setLayout(new BorderLayout());
-        centerPanel.add(boardContainer, BorderLayout.CENTER);
-        add(centerPanel, BorderLayout.CENTER);
-        add(buttonPanel, BorderLayout.EAST);
-
+        // centerPanel.setLayout(new BorderLayout());
+        // centerPanel.add(boardContainer, BorderLayout.CENTER);
+        // add(centerPanel, BorderLayout.CENTER);
+        // add(buttonPanel, BorderLayout.EAST);
+        pack();
     }
 
     public void setController(BoardController controller) {
