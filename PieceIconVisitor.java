@@ -54,6 +54,24 @@ public class PieceIconVisitor implements PieceVisitor {
         }
     }
 
+    public void visitFliped(PointPiece pointPiece) {
+        if (pointPiece.isYellow()) {
+            if (!pointPiece.getDirectionUp()) { // Notice the '!'
+                icon = new ImageIcon("chess pieces/yellow_Point_Up.png");
+            }
+            else {
+                icon = new ImageIcon("chess pieces/yellow_Point_Down.png");
+            }
+        } else {
+            if (!pointPiece.getDirectionUp()) { // Notice the '!'
+                icon = new ImageIcon("chess pieces/blue_Point_Up.png");
+            }
+            else {
+                icon = new ImageIcon("chess pieces/blue_Point_Down.png");
+            }
+        }
+    }
+
     public Icon getIcon() {
         return icon;
     }
