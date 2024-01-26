@@ -43,52 +43,5 @@ public class BoardController {
                 view.updateIcon();
                 break;
             }
-        // view.updateIcon();
-        // }
-        // else {
-        //     selectedCell = game.getBoard().getCell(row, col);
-        //     char signal = game.selectCell(selectedCell);
-        //     switch (signal) {
-        //         case 'n':
-        //             selectedCell = null;
-        //             System.out.println("??");
-        //             break;
-        //         case 'x':
-        //             //errorhandling
-        //             break;
-        //         case 'm':
-        //             //move
-        //             view.updateIcon();
-        //             break;
-        //     }
-            //move
-            // Move selectedMove = new Move(selectedCell.getPiece().isYellow(), selectedCell, game.getBoard().getCell(row, col));
-            // for (Move move : selectedCell.getPiece().getAllMoves(game.getBoard(), selectedCell)) {
-            //     if ((selectedMove.getEnd()).equals(move.getEnd())) {
-            //         System.out.println("???");
-            //         game.getBoard().getCell(row, col).setPiece(selectedCell.getPiece());
-            //         selectedCell = null;
-            //         view.updateIcon();
-            //     }
-            // }
-
     }
-    // }
-    // public void checkMovement(int row, int col) {
-    //     boolean colellowTurn = model.getCell(row, col).getPiece().iscolellow();
-    //     if (model.getCell(row, col).getPiece() == null) {
-    //         if (model.getCell(row, col).getPiece() != null && model.getCell(row, col).getPiece().getIsWhite() == whiteTurn) {
-    //             model.setselectedCell(model.getPiece(row, col));
-    //         }
-    //     } 
-    //     else {
-    //         if (selectedCell.canMove(row, col)) {
-    //             if (model.getPiece(row, col) == null || model.getPiece(row, col).getIsWhite() != whiteTurn) {
-    //                 model.movePiece(selectedCell.getrow(), selectedCell.getcol(), row, col);
-    //                 model.setSelectedPiece(null);
-    //                 model.setWhiteTurn(!whiteTurn);
-    //             }
-    //         }
-    //     }
-    // }
 }
