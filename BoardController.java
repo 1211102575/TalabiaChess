@@ -34,6 +34,7 @@ public class BoardController {
             case 'm':
                 view.clearSelectedBorder();
                 view.clearAvailableMove();
+                view.flip();
                 view.updateIcon();
                 break;
             case 'h':
