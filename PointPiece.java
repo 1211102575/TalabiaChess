@@ -9,8 +9,8 @@ public class PointPiece extends Piece {
     }
 
     // Setters and Getters for direction
-    public void setDirectionUp(boolean directionUp) {
-        this.directionUp = directionUp;
+    public void changeDirectionUp() {
+        this.directionUp = !directionUp;
     }
     public boolean getDirectionUp() {
         return directionUp;

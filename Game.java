@@ -17,14 +17,10 @@ public class Game {
         this.moves = new ArrayList<>();
     }
 
-    //add
+    // Get Board instance from Game instance
     public Board getBoard() {
         return board;
     }
-    // public Cell getCellFromBoard(Cell cell) {
-
-    //     return cell;
-    // }
 
     //  When a player selects a cell on the board
     // 'n' = clear board, 'x' = return error, 'm' = make move, 'h' = highlight moves
@@ -56,30 +52,6 @@ public class Game {
             previousCell = null;
             return 'n';
         }
-
-        //ori
-        // if (piece == null) {    // if no piece in cell
-        //     moves.clear();
-        //     return 'n';
-        // }
-
-        // if (piece.isYellow() != currentTurnIsYellow) {    // if piece selected is not yellow
-        //     System.out.println("Please select the piece according to turn!");
-        //     return 'x';
-        // }
-
-        // if (!moves.isEmpty()) {    // if no piece have not been selected
-        //     for (Move move : moves) {
-        //         if (move.getEnd() == cell) {    // if valid move is made
-        //             makeMove(move);
-        //             moves.clear();
-        //             changeState(move);
-        //             return 'm';
-        //         }
-        //     }
-        //     // if move made is not valid
-        //     return 'n';
-        // }
         
         // if select a piece to make move, then highlight all possible moves
         moves = piece.getAllMoves(board, cell);
@@ -95,15 +67,19 @@ public class Game {
         // Starting piece position
         int sRow = start.getRow();
         int sCol = start.getCol();
-        //piece
-        //board.setCell(sRow, sCol, null);
         board.getCell(sRow, sCol).setPiece(null);
 
         // Ending piece position
         int eRow = end.getRow();
         int eCol = end.getCol();
+        // Check if point piece reach the end
+        if (movePiece instanceof PointPiece) {
+            if (end.getRow() == 0 || end.getRow() == 5) {
+                ((PointPiece)movePiece).changeDirectionUp();
+            }
+        }
+
         board.getCell(eRow, eCol).setPiece(movePiece);
-        // board.setCell(eRow, eCol, end);
     }
 
     public void changeState(Move move) {
@@ -119,24 +95,25 @@ public class Game {
             gameState = "YELLOW_WIN";
             return;
         }
+
         // Next player turn
         currentTurnIsYellow = !currentTurnIsYellow;
+
         turns ++;
         if (turns%4 == 0) {
             transformPiece();
         }
     }
 
-    public void transformPiece() {    // Transform piece every 2 turns
+    // Transform piece every 2 turns
+    public void transformPiece() {    
         Cell cell;
         Piece piece;
-        // Boolean isYellow;
 
         for (int row = 0; row <= 5; row++) {
             for (int col = 0; col <= 6; col++) {
                 cell = board.getCell(row, col);
                 piece = cell.getPiece();
-                // isYellow = piece.isYellow();
                 
                 if (piece instanceof TimePiece) {
                     cell.setPiece(new PlusPiece(cell.getPiece().isYellow()));
