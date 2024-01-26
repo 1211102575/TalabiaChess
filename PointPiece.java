@@ -23,31 +23,43 @@ public class PointPiece extends Piece {
         // Point piece can only move forward, 1 or 2 steps, depending on direction
         if (directionUp) {
             moves.addAll(getMove(board, start, -1, 0));
-            moves.addAll(getMove(board, start, -2, 0));
         }
         else {
             moves.addAll(getMove(board, start, 1, 0));
-            moves.addAll(getMove(board, start, 2, 0));
         }
 
         return moves;
     }
 
-    // Get moves in direction row, col
     public ArrayList<Move> getMove(Board board, Cell start, int row, int col) {
         ArrayList<Move> moves = new ArrayList<>();
-        int currentX = start.getRow() + row;
-        int currentY = start.getCol() + col;
+        int currentRow = start.getRow() + row;
+        int currentCol = start.getCol() + col;
+        int twoMove = 1;
 
         // Check if the move is within the board bounds
-        if (isValidMove(currentX, currentY)) {
-            Cell moveToCell = new Cell(currentX, currentY, this);
-            Piece pieceInCell = board.getCell(currentX, currentY).getPiece();
+        while (isValidMove(currentRow, currentCol)) {
+            Cell moveToCell = new Cell(currentRow, currentCol, this);
+            Piece pieceInCell = board.getCell(currentRow, currentCol).getPiece();
 
             // Check if the destination cell is empty or has an enemy piece
             if (pieceInCell == null || pieceInCell.isYellow() != this.isYellow()) {
                 moves.add(new Move(this.isYellow(), start, moveToCell));
             }
+
+            // If there is a piece
+            if (twoMove == 0) { 
+                break;
+            }
+            // If there is a piece in the cell, break the loop
+            if (pieceInCell != null) {
+                break;
+            }
+
+            // Move diagonally
+            currentRow += row;
+            currentCol += col;
+            twoMove --;
         }
 
         return moves;

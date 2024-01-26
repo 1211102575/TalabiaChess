@@ -1,21 +1,27 @@
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
-import java.io.*;
 
 public class BoardView extends JFrame {
     private JButton[][] cellButtons;
     private BoardController controller;
     private JButton selectedCellButton;
-    private JPanel centerPanel;
+
     private JPanel board;
     private JPanel boardContainer;
+    private JPanel leftPanel;
+    private JPanel buttonPanel ;
+    private JPanel centerPanel ; 
+    private JButton saveButton ;
+    private JButton loadButton ; 
+    private JButton exitButton ;
 
     private final PieceIconVisitor visitor = new PieceIconVisitor();
-
+    
     public BoardView() {
         setLayout(new BorderLayout());
         setTitle("Talabia Chess");
@@ -23,19 +29,62 @@ public class BoardView extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         board = new JPanel();
-        board.setPreferredSize(new Dimension(750, 720));
-        board.setLayout(new GridLayout(6, 7));
-        board.setBorder(new EmptyBorder(20, 20, 20, 20));
+        board.setPreferredSize(new Dimension(750,720));
+        board.setLayout(new GridLayout(6,7));
+        board.setBorder(new LineBorder(new Color(40, 33, 21 ),20));
 
         boardContainer = new JPanel();
-        boardContainer.setLayout(new FlowLayout());
+        boardContainer.setPreferredSize(new Dimension(760,730));
+        boardContainer.setLayout(new FlowLayout()); // floatlayout : not resize the board no matter window is maximized/ minimizied
         boardContainer.add(board);
+        boardContainer.setBackground(new Color(117, 95, 62 ));
 
-        // centerPanel = new JPanel();
+        leftPanel = new JPanel();
+
+
+        //create three buttons on the right side.
+        Dimension buttonSize = new Dimension(100,50);
+        saveButton = new JButton("Save");
+        saveButton.setPreferredSize(buttonSize);
+        saveButton.setAlignmentX(JComponent.CENTER_ALIGNMENT);
+
+        loadButton = new JButton("Load");
+        loadButton.setPreferredSize(buttonSize);
+        loadButton.setAlignmentX(JComponent.CENTER_ALIGNMENT);
+
+        exitButton = new JButton("Exit");
+        exitButton.setPreferredSize(buttonSize);
+        exitButton.setAlignmentX(JComponent.CENTER_ALIGNMENT);
+
+        buttonPanel = new JPanel();
+        buttonPanel.setOpaque(false);
+        buttonPanel.setPreferredSize(new Dimension(300, 0));
+        buttonPanel.setLayout(new BoxLayout(buttonPanel , BoxLayout.Y_AXIS));
+        buttonPanel.add(Box.createRigidArea(new Dimension(0,220)));
+        buttonPanel.add(saveButton);
+        buttonPanel.add(Box.createRigidArea(new Dimension(0,100)));
+        buttonPanel.add(loadButton);
+        buttonPanel.add(Box.createRigidArea(new Dimension(0,100)));
+        buttonPanel.add(exitButton);
+        buttonPanel.add(Box.createRigidArea(new Dimension(0,220)));
+        buttonPanel.setAlignmentX(JComponent.CENTER_ALIGNMENT);
+        
+        //create center panel
+        centerPanel = new JPanel();
+        centerPanel.setBackground(new Color(117, 95, 62 ));
+        centerPanel.setPreferredSize(new Dimension(1000,900));
+        
         // centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.X_AXIS));
+        // centerPanel.add(Box.createRigidArea(new Dimension (300,0)));
         // centerPanel.add(boardContainer);
-        // add(centerPanel, BorderLayout.CENTER);
-        add(boardContainer, BorderLayout.CENTER);
+        // centerPanel.add(Box.createRigidArea(new Dimension (200,0)));
+        // centerPanel.add(buttonPanel);
+        // add(centerPanel,BorderLayout.CENTER);
+
+        centerPanel.setLayout(new BorderLayout());
+        centerPanel.add(boardContainer, BorderLayout.CENTER);
+        add(centerPanel, BorderLayout.CENTER);
+        add(buttonPanel, BorderLayout.EAST);
 
     }
 
@@ -44,14 +93,21 @@ public class BoardView extends JFrame {
     }
 
     public void initiateBoard() {
+        Color defaultColor =new Color (71, 58, 11  );
         cellButtons = new JButton[6][7];
         for (int row = 0; row < 6; row++) {
             for (int col = 0; col < 7; col++) {
-
+                
+                if (defaultColor.equals(new Color(71, 58, 11  ))) {
+                    defaultColor = new Color(192, 177, 127 );
+                }
+                else{
+                    defaultColor = new Color (71, 58, 11  ) ;
+                }
                 cellButtons[row][col] = new JButton();
                 cellButtons[row][col].setPreferredSize(new Dimension(100, 100));
-                cellButtons[row][col].setBackground(Color.WHITE);
-                cellButtons[row][col].setBorder(new LineBorder(Color.GRAY));
+                cellButtons[row][col].setBackground(defaultColor);
+                cellButtons[row][col].setBorder(new LineBorder(Color.WHITE));
                 int buttonRow = row;
                 int buttonCol = col;
                 cellButtons[row][col].addActionListener(new ActionListener() {
@@ -64,58 +120,29 @@ public class BoardView extends JFrame {
                 board.add(cellButtons[row][col]);
             }
         }
-
-        JButton saveButton = new JButton("Save Game");
-        saveButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Game.saveGame(Game.getInstance()); // Save the current game instance
-                JOptionPane.showMessageDialog(BoardView.this, "Game saved successfully!");
-            }
-        });
-
-        JButton loadButton = new JButton("Load Game");
-        loadButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Game loadedGame = Game.loadGame();
-                if (loadedGame != null) {
-                    Game.setInstance(loadedGame); // Set the loaded game instance
-                    updateIcon(); // Update the UI to reflect the loaded game state
-                    JOptionPane.showMessageDialog(BoardView.this, "Game loaded successfully!");
-                } else {
-                    JOptionPane.showMessageDialog(BoardView.this, "Error loading the game.", "Error",
-                            JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        });
-
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.add(saveButton);
-        buttonPanel.add(loadButton);
-
-        add(buttonPanel, BorderLayout.SOUTH);
-
         updateIcon();
         setVisible(true);
     }
 
     public void updateIcon() {
         for (int row = 0; row < 6; row++) {
-            for (int col = 0; col < 7; col++) {
+            for (int col = 0; col <7; col++) {
                 if (controller.getPiece(row, col) != null) {
                     controller.getPiece(row, col).accept(visitor);
                     Icon icon = visitor.getIcon();
                     cellButtons[row][col].setIcon(icon);
                 }
-            }
+                else {
+                    cellButtons[row][col].setIcon(new ImageIcon());
+                }
+            }       
         }
     }
 
     public void flip() {
         removeAll();
         for (int row = 5; row >= 0; row = row - 1) {
-            for (int col = 6; col >= 0; col = col - 1) {
+            for (int col = 6; col >=0; col = col - 1) {
                 add(cellButtons[row][col]);
             }
         }
@@ -124,13 +151,19 @@ public class BoardView extends JFrame {
     public void setSelectBorder() {
         selectedCellButton.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
     }
-
     public void clearSelectedBorder() {
+        Color defaultColor =new Color (71, 58, 11  );
         for (int row = 0; row < 6; row++) {
-            for (int col = 0; col < 7; col++) {
-                cellButtons[row][col].setBackground(Color.WHITE);
-                cellButtons[row][col].setBorder(new LineBorder(Color.GRAY));
-            }
+            for (int col = 0; col <7; col++) {
+                if (defaultColor.equals(new Color(71, 58, 11  ))) {
+                    defaultColor = new Color(192, 177, 127 );
+                }
+                else{
+                    defaultColor = new Color(71, 58, 11  ) ;
+                }
+                cellButtons[row][col].setBackground(defaultColor);
+                cellButtons[row][col].setBorder(new LineBorder(Color.WHITE));
+            }       
         }
     }
 
@@ -139,35 +172,18 @@ public class BoardView extends JFrame {
             cellButtons[square.getEnd().getRow()][square.getEnd().getCol()].setBackground(new Color(0, 255, 0));
         }
     }
-
     public void clearAvailableMove() {
+        Color defaultColor =new Color (71, 58, 11  );
         for (int row = 0; row < 6; row++) {
-            for (int col = 0; col < 7; col++) {
-                cellButtons[row][col].setBackground(Color.WHITE);
-            }
-        }
-    }
-
-    private void saveGame() {
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("save_game.ser"))) {
-            oos.writeObject(Game.getInstance()); // Assuming you have a static method to get the current game instance
-            JOptionPane.showMessageDialog(this, "Game saved successfully!");
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Error saving the game.", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
-    private void loadGame() {
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("save_game.ser"))) {
-            Game loadedGame = (Game) ois.readObject();
-            // Set the loaded game instance to the current game instance
-            Game.setInstance(loadedGame);
-            updateIcon(); // Update the UI to reflect the loaded game state
-            JOptionPane.showMessageDialog(this, "Game loaded successfully!");
-        } catch (IOException | ClassNotFoundException ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Error loading the game.", "Error", JOptionPane.ERROR_MESSAGE);
+            for (int col = 0; col <7; col++) {
+                if (defaultColor.equals(new Color(71, 58, 11  ))) {
+                    defaultColor = new Color(192, 177, 127 );
+                }
+                else{
+                    defaultColor = new Color(71, 58, 11  ) ;
+                }
+                cellButtons[row][col].setBackground(defaultColor);
+            }       
         }
     }
 }

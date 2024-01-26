@@ -2,6 +2,7 @@ public class Board {
     private Cell[][] cells;
 
     public Board() {
+        cells = new Cell[6][7];
         this.resetBoard();
     }
 
@@ -36,7 +37,7 @@ public class Board {
 
         // Blue point pieces
         for (int i = 0; i < 7; i++) {
-            cells[1][i] = new Cell(1, i, new PointPiece(false, true));
+            cells[1][i] = new Cell(1, i, new PointPiece(false, false));
         }
 
         // Blue bottom row pieces

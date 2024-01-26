@@ -1,53 +1,26 @@
 import java.util.*;
-import java.io.*;
 
-public class Game implements Serializable {
+public class Game {
     private Board board;
-    private static final long serialVersionUID = 1L;
     private int turns;
     private boolean currentTurnIsYellow;
     private String gameState; // "IN_PLAY" "YELLOW_WIN" "BLUE_WIN"
     private ArrayList<Move> moves; // Arraylist to store the moves of the piece that is selected
-    private static Game instance;
+    private Cell previousCell;
 
     // Initialize game
-    private Game() {
+    public Game() {
         this.board = new Board();
         this.turns = 0;
         this.currentTurnIsYellow = true;
         this.gameState = "IN_PLAY";
         this.moves = new ArrayList<>();
     }
-    
-    public static Game getInstance() {
-        if (instance == null) {
-            instance = new Game();
-        }
-        return instance;
-    }
-    
-    public static void setInstance(Game game) {
-        instance = game;
-    }
 
-    public static void saveGame(Game game) {
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("save_game.ser"))) {
-            oos.writeObject(game);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            // Handle the exception as needed
-        }
+    //add
+    public Board getBoard() {
+        return board;
     }
-    public static Game loadGame() {
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("save_game.ser"))) {
-            return (Game) ois.readObject();
-        } catch (IOException | ClassNotFoundException ex) {
-            ex.printStackTrace();
-            // Handle the exception as needed
-            return null;
-        }
-    }
-
     // public Cell getCellFromBoard(Cell cell) {
 
     //     return cell;
@@ -57,29 +30,56 @@ public class Game implements Serializable {
     // 'n' = clear board, 'x' = return error, 'm' = make move, 'h' = highlight moves
     public char selectCell(Cell cell) {
         Piece piece = cell.getPiece();
-
-        if (piece == null) {    // if no piece in cell
-            moves.clear();
-            return 'n';
+        if (previousCell == null) {
+            if (piece == null) {    // if no piece in cell
+                return 'n';
+            }
+            else if (piece.isYellow() != currentTurnIsYellow) {    // if piece selected is not yellow
+                System.out.println("Please select the piece according to turn!");
+                return 'x';
+            }
+            previousCell = cell;
         }
-
-        if (piece.isYellow() != currentTurnIsYellow) {    // if piece selected is not yellow
-            System.out.println("Please select the piece according to turn!");
-            return 'x';
-        }
-
-        if (!moves.isEmpty()) {    // if no piece have not been selected
-            for (Move move : moves) {
-                if (move.getEnd() == cell) {    // if valid move is made
-                    makeMove(move);
-                    moves.clear();
-                    changeState(move);
-                    return 'm';
+        else {
+            if (!moves.isEmpty()) {    // if no piece have not been selected
+                for (Move move : moves) {
+                    if (move.getEnd().getRow() == cell.getRow() && move.getEnd().getCol() == cell.getCol()) {    // if valid move is made
+                        makeMove(move);
+                        moves.clear();
+                        changeState(move);
+                        previousCell = null;
+                        return 'm';
+                    }
                 }
             }
             // if move made is not valid
+            previousCell = null;
             return 'n';
         }
+
+        //ori
+        // if (piece == null) {    // if no piece in cell
+        //     moves.clear();
+        //     return 'n';
+        // }
+
+        // if (piece.isYellow() != currentTurnIsYellow) {    // if piece selected is not yellow
+        //     System.out.println("Please select the piece according to turn!");
+        //     return 'x';
+        // }
+
+        // if (!moves.isEmpty()) {    // if no piece have not been selected
+        //     for (Move move : moves) {
+        //         if (move.getEnd() == cell) {    // if valid move is made
+        //             makeMove(move);
+        //             moves.clear();
+        //             changeState(move);
+        //             return 'm';
+        //         }
+        //     }
+        //     // if move made is not valid
+        //     return 'n';
+        // }
         
         // if select a piece to make move, then highlight all possible moves
         moves = piece.getAllMoves(board, cell);
@@ -95,13 +95,15 @@ public class Game implements Serializable {
         // Starting piece position
         int sRow = start.getRow();
         int sCol = start.getCol();
-        board.setCell(sRow, sCol, null);
+        //piece
+        //board.setCell(sRow, sCol, null);
+        board.getCell(sRow, sCol).setPiece(null);
 
         // Ending piece position
         int eRow = end.getRow();
         int eCol = end.getCol();
-        end.setPiece(movePiece);
-        board.setCell(eRow, eCol, end);
+        board.getCell(eRow, eCol).setPiece(movePiece);
+        // board.setCell(eRow, eCol, end);
     }
 
     public void changeState(Move move) {
@@ -119,7 +121,7 @@ public class Game implements Serializable {
         }
         // Next player turn
         currentTurnIsYellow = !currentTurnIsYellow;
-
+        turns ++;
         if (turns%4 == 0) {
             transformPiece();
         }
@@ -128,19 +130,19 @@ public class Game implements Serializable {
     public void transformPiece() {    // Transform piece every 2 turns
         Cell cell;
         Piece piece;
-        Boolean isYellow;
+        // Boolean isYellow;
 
         for (int row = 0; row <= 5; row++) {
             for (int col = 0; col <= 6; col++) {
                 cell = board.getCell(row, col);
                 piece = cell.getPiece();
-                isYellow = piece.isYellow();
+                // isYellow = piece.isYellow();
                 
                 if (piece instanceof TimePiece) {
-                    cell.setPiece(new PlusPiece(isYellow));
+                    cell.setPiece(new PlusPiece(cell.getPiece().isYellow()));
                 }
                 else if (piece instanceof PlusPiece) {
-                    cell.setPiece(new TimePiece(isYellow));
+                    cell.setPiece(new TimePiece(cell.getPiece().isYellow()));
                 }
 
                 board.setCell(row, col, cell);
