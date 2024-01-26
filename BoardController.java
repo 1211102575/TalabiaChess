@@ -29,6 +29,7 @@ public class BoardController {
                 break;
             case 'x':
                 //errorhandling
+                view.invalidPiece();
                 selectedCell = null;
                 break;
             case 'm':
