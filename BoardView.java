@@ -93,6 +93,10 @@ public class BoardView extends JFrame {
         this.controller = controller;
     }
 
+    public void invalidPiece() {
+        JOptionPane.showMessageDialog(new JFrame(), "Please select your piece to move!", "Dialog", JOptionPane.ERROR_MESSAGE);
+    }
+
     public void initiateBoard() {
         Color defaultColor =new Color (71, 58, 11  );
         cellButtons = new JButton[6][7];
