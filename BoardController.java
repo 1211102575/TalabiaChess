@@ -1,4 +1,6 @@
 import java.awt.Dimension;
+
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class BoardController {
@@ -74,10 +76,15 @@ public class BoardController {
 
     public void handleSaveGameButton(){
         //save game
+        String filename = JOptionPane.showInputDialog("Enter save file name: ");
+        game.saveToFile(filename + ".txt");
     }
 
     public void handleLoadGameButton(){
         //load game code
+        game = new Game();
+        String filename = JOptionPane.showInputDialog("Enter save file name: ");
+        game.loadGameFromFile(filename);
     }
 
     public void winGame(String winner) {

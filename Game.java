@@ -199,10 +199,10 @@ public class Game {
                     String[] parts = token.substring(1, token.length() - 1).split(":");
                     int row = Integer.parseInt(parts[0].split(",")[0]);
                     int col = Integer.parseInt(parts[0].split(",")[1]);
-                    String pieceType = parts[1].trim();  // Adjust if necessary
-                    boolean isYellow = parts[2].trim().equals("Yellow");  // Adjust if necessary
-                    // Assuming you have a board object and a method placePiece in your Board class
-                    this.board.placePiece(createPiece(pieceType, isYellow), row, col);
+                    String pieceType = parts[1].trim();
+                    boolean isYellow = parts[2].trim().equals("Yellow");
+                    // Set Cell using information
+                    this.board.setCell(row, col, new Cell(row, col, createPiece(pieceType, isYellow)));
                 }
             }
         }
@@ -212,7 +212,7 @@ public class Game {
         // Instantiate the appropriate subclass of Piece based on the pieceType
         switch (pieceType) {
             case "PointPiece":
-                return new PointPiece(isYellow);
+                return new PointPiece(isYellow, true);
             case "TimePiece":
                 return new TimePiece(isYellow);
             case "PlusPiece":
@@ -226,7 +226,9 @@ public class Game {
     public void loadGameFromFile(String filePath) {
         try {
             String savedState = new String(Files.readAllBytes(Paths.get(filePath)));
+            System.out.println("Load success");
             loadGame(savedState);
+            System.out.println("laod game success");
         } catch (IOException e) {
             e.printStackTrace();
         }
