@@ -40,9 +40,9 @@ public class Game {
             if (!moves.isEmpty()) {    // if no piece have not been selected
                 for (Move move : moves) {
                     if (move.getEnd().getRow() == cell.getRow() && move.getEnd().getCol() == cell.getCol()) {    // if valid move is made
+                        changeState(move);
                         makeMove(move);
                         moves.clear();
-                        changeState(move);
                         previousCell = null;
                         return 'm';
                     }
@@ -83,7 +83,19 @@ public class Game {
     }
 
     public void changeState(Move move) {
+        // Next player turn
+        currentTurnIsYellow = !currentTurnIsYellow;
+        // Add turns
+        turns ++;
+        if (turns%4 == 0) {
+            transformPiece();
+        }
+
+        // Win condition check
         Cell endCell = move.getEnd();
+        int endRow = endCell.getRow();
+        int endCol = endCell.getCol();
+        endCell = board.getCell(endRow, endCol);
         Piece endPiece = endCell.getPiece();
 
         if (endPiece instanceof SunPiece) {
@@ -95,14 +107,7 @@ public class Game {
             gameState = "YELLOW_WIN";
             return;
         }
-
-        // Next player turn
-        currentTurnIsYellow = !currentTurnIsYellow;
-
-        turns ++;
-        if (turns%4 == 0) {
-            transformPiece();
-        }
+        System.out.println("Success");
     }
 
     // Transform piece every 2 turns

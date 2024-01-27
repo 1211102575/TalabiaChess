@@ -18,7 +18,7 @@ public class PlusPiece extends Piece{
         return moves;
     }
 
-       public ArrayList<Move> getMove(Board board, Cell start, int row, int col) {
+    public ArrayList<Move> getMove(Board board, Cell start, int row, int col) {
         ArrayList<Move> moves = new ArrayList<>();
         int currentRow = start.getRow() + row;
         int currentCol = start.getCol() + col;
