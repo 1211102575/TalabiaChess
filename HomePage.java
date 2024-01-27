@@ -57,6 +57,7 @@ public class HomePage {
             @Override
             public void actionPerformed(ActionEvent e) {
                 controller.handleNewGameButton();
+                firstPage.dispose();
             }
         });
 

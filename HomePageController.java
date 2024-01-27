@@ -1,7 +1,8 @@
 public class HomePageController{
 
     public void handleNewGameButton() {
-        //start game code
+        new BoardController();
+        
     }
 
     public void handleLoadGameButton(){
@@ -10,10 +11,5 @@ public class HomePageController{
 
     public void handleExitButton() {
         System.exit(0);
-    }
- 
-    public static void main (String[] args){
-        HomePageController controller = new HomePageController();
-        HomePage view = new HomePage(controller);
     }
 }

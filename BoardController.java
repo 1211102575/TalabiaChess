@@ -1,10 +1,10 @@
+import java.awt.Dimension;
+import javax.swing.JPanel;
+
 public class BoardController {
     private BoardView view = new BoardView();
     private Game game = new Game();
     private Cell selectedCell;
-
-    //add
-    private boolean moved;
 
     public BoardController() {
         view.setController(this);
@@ -18,7 +18,6 @@ public class BoardController {
     }
 
     public void handleCellButtonClick(int row, int col) {
-        // if (selectedCell == null) {
         selectedCell = game.getBoard().getCell(row, col);
         char signal = game.selectCell(selectedCell);
         switch (signal) {
@@ -33,6 +32,12 @@ public class BoardController {
                 selectedCell = null;
                 break;
             case 'm':
+                if (game.getGameState() != "IN_PLAY") {
+                    view.clearSelectedBorder();
+                    view.clearAvailableMove();
+                    winGame(game.getGameState());
+                    break;
+                }
                 view.clearSelectedBorder();
                 view.clearAvailableMove();
                 view.flip();
@@ -46,4 +51,43 @@ public class BoardController {
                 break;
             }
     }
+    
+    public void resize(JPanel board, JPanel boardContainer) {
+        int width = boardContainer.getWidth();
+        int height = boardContainer.getHeight();
+        int size = Math.min(width, height);
+        board.setPreferredSize(new Dimension(size, size));
+        boardContainer.revalidate();
+    }
+    
+    public void handleNewGameButton() {
+        game = new Game();
+        view.setController(this);
+        selectedCell = null;
+        view.setController(this);
+        if (view.getFlipped()) {
+            view.flip();
+            view.setFlipped(false);
+        }
+        view.updateIcon();
+    }
+
+    public void handleSaveGameButton(){
+        //save game
+    }
+
+    public void handleLoadGameButton(){
+        //load game code
+    }
+
+    public void winGame(String winner) {
+        view.displayWinner(winner);
+        handleNewGameButton();
+    }
+
+    public void handleExitButton() {
+        System.exit(0);
+    }
+ 
+
 }

@@ -55,8 +55,7 @@ public class PointPiece extends Piece {
             if (pieceInCell != null) {
                 break;
             }
-
-            // Move diagonally
+            
             currentRow += row;
             currentCol += col;
             twoMove --;

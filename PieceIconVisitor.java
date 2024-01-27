@@ -72,6 +72,7 @@ public class PieceIconVisitor implements PieceVisitor {
         }
     }
 
+
     public Icon getIcon() {
         return icon;
     }

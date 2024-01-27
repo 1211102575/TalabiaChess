@@ -1,5 +1,4 @@
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
 import java.awt.*;
@@ -13,10 +12,10 @@ public class BoardView extends JFrame {
 
     private JPanel board;
     private JPanel boardContainer;
-    private JPanel leftPanel;
     private JPanel buttonPanel ;
     private JPanel centerPanel ; 
     private JButton saveButton ;
+    private JButton newGameButton;
     private JButton loadButton ; 
     private JButton exitButton ;
     private boolean flipped = false;
@@ -26,41 +25,78 @@ public class BoardView extends JFrame {
     public BoardView() {
         setLayout(new BorderLayout());
         setTitle("Talabia Chess");
-        setSize(600, 700);
+        setPreferredSize(new Dimension(800, 600));
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         board = new JPanel();
-        board.setPreferredSize(new Dimension(750,720));
         board.setLayout(new GridLayout(6,7));
         board.setBorder(new LineBorder(new Color(40, 33, 21 ),20));
 
         boardContainer = new JPanel();
-        boardContainer.setPreferredSize(new Dimension(760,730));
-        boardContainer.setLayout(new FlowLayout()); // floatlayout : not resize the board no matter window is maximized/ minimizied
-        boardContainer.add(board);
+        boardContainer.setLayout(new GridBagLayout()); // Changed to BorderLayout
+        boardContainer.addComponentListener(new ComponentAdapter() {
+            public void componentResized(ComponentEvent e) {
+                controller.resize(board, boardContainer);
+                //https://stackoverflow.com/questions/27544569/java-how-to-control-jpanel-aspect-ratio
+            } 
+        });
+        boardContainer.add(board); // Added board to the center
         boardContainer.setBackground(new Color(117, 95, 62 ));
-        // boardContainer.setAlignmentX(JComponent.CENTER_ALIGNMENT);
-        // boardContainer.setAlignmentY(JComponent.CENTER_ALIGNMENT);
 
-        //create three buttons on the right side.
+        //create four buttons on the right side.
         Dimension buttonSize = new Dimension(100,50);
         saveButton = new JButton("Save");
         saveButton.setMaximumSize(buttonSize);
-        // saveButton.setAlignmentX(JComponent.CENTER_ALIGNMENT);
+        saveButton.setBackground(Color.ORANGE);
+        saveButton.setForeground(Color.black);
+        saveButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.handleSaveGameButton();
+            }
+        });
 
-        loadButton = new JButton("Load");
+        newGameButton = new JButton("New Game");
+        newGameButton.setMaximumSize(buttonSize);
+        newGameButton.setBackground(Color.ORANGE);
+        newGameButton.setForeground(Color.black);
+        newGameButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.handleNewGameButton();
+            }
+        });
+
+        loadButton = new JButton("Load Game");
         loadButton.setMaximumSize(buttonSize);
-        // loadButton.setAlignmentX(JComponent.CENTER_ALIGNMENT);
+        loadButton.setBackground(Color.ORANGE);
+        loadButton.setForeground(Color.black);
+        loadButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.handleLoadGameButton();
+            }
+        });
+
 
         exitButton = new JButton("Exit");
         exitButton.setMaximumSize(buttonSize);
-        // exitButton.setAlignmentX(JComponent.CENTER_ALIGNMENT);
+        exitButton.setBackground(Color.ORANGE);
+        exitButton.setForeground(Color.black);
+        exitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.handleExitButton();
+            }
+        });
+
 
         buttonPanel = new JPanel();
         buttonPanel.setOpaque(false);
-        buttonPanel.setPreferredSize(new Dimension(300, 0));
         buttonPanel.setLayout(new BoxLayout(buttonPanel , BoxLayout.Y_AXIS));
-        buttonPanel.add(Box.createRigidArea(new Dimension(0,220)));
+        buttonPanel.add(Box.createRigidArea(new Dimension(0,180)));
+        buttonPanel.add(newGameButton);
+        buttonPanel.add(Box.createRigidArea(new Dimension(0,100)));
         buttonPanel.add(saveButton);
         buttonPanel.add(Box.createRigidArea(new Dimension(0,100)));
         buttonPanel.add(loadButton);
@@ -68,28 +104,30 @@ public class BoardView extends JFrame {
         buttonPanel.add(exitButton);
         buttonPanel.add(Box.createRigidArea(new Dimension(0,220)));
         buttonPanel.setAlignmentX(JComponent.CENTER_ALIGNMENT);
-        
+
         //create center panel
         centerPanel = new JPanel();
         centerPanel.setBackground(new Color(117, 95, 62 ));
-        centerPanel.setPreferredSize(new Dimension(1000,900));
+        centerPanel.setLayout(new BorderLayout());
         
-        centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.X_AXIS));
-        centerPanel.add(Box.createRigidArea(new Dimension (300,0)));
-        centerPanel.add(boardContainer);
-        centerPanel.add(Box.createRigidArea(new Dimension (200,0)));
-        centerPanel.add(buttonPanel);
-        add(centerPanel,BorderLayout.CENTER);
+        centerPanel.add(boardContainer, BorderLayout.CENTER); // Added boardContainer to the center
+        centerPanel.add(buttonPanel, BorderLayout.EAST); // Added buttonPanel to the east
 
-        // centerPanel.setLayout(new BorderLayout());
-        // centerPanel.add(boardContainer, BorderLayout.CENTER);
-        // add(centerPanel, BorderLayout.CENTER);
-        // add(buttonPanel, BorderLayout.EAST);
+        add(centerPanel);
+        revalidate();
         pack();
+        setLocationRelativeTo(null);
     }
 
     public void setController(BoardController controller) {
         this.controller = controller;
+    }
+
+    public boolean getFlipped() {
+        return flipped;
+    }
+    public void setFlipped(boolean flipped) {
+        this.flipped = flipped;
     }
 
     public void invalidPiece() {
@@ -209,5 +247,9 @@ public class BoardView extends JFrame {
                 cellButtons[row][col].setBackground(defaultColor);
             }       
         }
+    }
+
+    public void displayWinner(String winner) {
+        JOptionPane.showMessageDialog(this, winner, "Game Over!", JOptionPane.INFORMATION_MESSAGE);
     }
 }
