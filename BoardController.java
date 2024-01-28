@@ -1,5 +1,6 @@
 import java.awt.Dimension;
 
+
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -95,6 +96,4 @@ public class BoardController {
     public void handleExitButton() {
         System.exit(0);
     }
- 
-
 }

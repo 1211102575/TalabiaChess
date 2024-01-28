@@ -1,3 +1,4 @@
+import java.util.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
@@ -26,6 +27,9 @@ public class Game {
     public Board getBoard() {
         return board;
     }
+    public String getGameState() {
+        return gameState;
+    }
 
     // When a player selects a cell on the board
     // 'n' = clear board, 'x' = return error, 'm' = make move, 'h' = highlight moves
@@ -34,21 +38,20 @@ public class Game {
         if (previousCell == null) {
             if (piece == null) { // if no piece in cell
                 return 'n';
-            } else if (piece.isYellow() != currentTurnIsYellow) { // if piece selected is not yellow
+            }
+            else if (piece.isYellow() != currentTurnIsYellow) {    // if piece selected is not yellow
                 System.out.println("Please select the piece according to turn!");
                 return 'x';
             }
             previousCell = cell;
-        } else {
+        }
+        else {
             if (!moves.isEmpty()) { // if no piece have not been selected
                 for (Move move : moves) {
-                    if (move.getEnd().getRow() == cell.getRow() && move.getEnd().getCol() == cell.getCol()) { // if
-                        // valid
-                        // move is
-                        // made
-                        changeState(move);
+                    if (move.getEnd().getRow() == cell.getRow() && move.getEnd().getCol() == cell.getCol()) { // if valid move is made
                         makeMove(move);
                         moves.clear();
+                        changeState(move);
                         previousCell = null;
                         return 'm';
                     }
@@ -73,6 +76,8 @@ public class Game {
         // Starting piece position
         int sRow = start.getRow();
         int sCol = start.getCol();
+        //piece
+        //board.setCell(sRow, sCol, null);
         board.getCell(sRow, sCol).setPiece(null);
 
         // Ending piece position
@@ -81,43 +86,33 @@ public class Game {
         // Check if point piece reach the end
         if (movePiece instanceof PointPiece) {
             if (end.getRow() == 0 || end.getRow() == 5) {
-                ((PointPiece) movePiece).changeDirectionUp();
+                ((PointPiece)movePiece).changeDirectionUp();
             }
         }
-
+        //change
+        Piece endPiece = board.getCell(eRow, eCol).getPiece();
+        if (endPiece instanceof SunPiece) {
+            if (endPiece.isYellow()) {    // If Yellow's SunPiece captured
+                gameState = "BLUE_WIN!!!";
+            }
+            else {    // If Blue's SunPiece captured
+                gameState = "YELLOW_WIN!!!";
+            }
+        }
         board.getCell(eRow, eCol).setPiece(movePiece);
     }
 
     public void changeState(Move move) {
-        // Next player turn
         currentTurnIsYellow = !currentTurnIsYellow;
-        // Add turns
-        turns++;
-        if (turns % 4 == 0) {
+
+        turns ++;
+        if (turns%4 == 0) {
             transformPiece();
         }
-
-        // Win condition check
-        Cell endCell = move.getEnd();
-        int endRow = endCell.getRow();
-        int endCol = endCell.getCol();
-        endCell = board.getCell(endRow, endCol);
-        Piece endPiece = endCell.getPiece();
-
-        if (endPiece instanceof SunPiece) {
-            if (endPiece.isYellow()) { // If Yellow's SunPiece captured
-                gameState = "BLUE_WIN";
-                return;
-            }
-            // If Blue's SunPiece captured
-            gameState = "YELLOW_WIN";
-            return;
-        }
-        System.out.println("Success");
     }
 
     // Transform piece every 2 turns
-    public void transformPiece() {
+    public void transformPiece() {    
         Cell cell;
         Piece piece;
 
@@ -125,13 +120,13 @@ public class Game {
             for (int col = 0; col <= 6; col++) {
                 cell = board.getCell(row, col);
                 piece = cell.getPiece();
-
+                
                 if (piece instanceof TimePiece) {
                     cell.setPiece(new PlusPiece(cell.getPiece().isYellow()));
-                } else if (piece instanceof PlusPiece) {
+                }
+                else if (piece instanceof PlusPiece) {
                     cell.setPiece(new TimePiece(cell.getPiece().isYellow()));
                 }
-
                 board.setCell(row, col, cell);
             }
         }
@@ -222,7 +217,7 @@ public class Game {
                 throw new IllegalArgumentException("Unknown piece type: " + pieceType);
         }
     }
-    
+
     public void loadGameFromFile(String filePath) {
         try {
             String savedState = new String(Files.readAllBytes(Paths.get(filePath)));
