@@ -176,7 +176,9 @@ public class Game {
 
     public void saveToFile(String fileName) {
         try {
-            Files.write(Path.of(fileName), saveGame().getBytes(), StandardOpenOption.TRUNCATE_EXISTING);
+            Path path = Paths.get(fileName);
+            Files.deleteIfExists(path);
+            Files.write(Path.of(fileName), saveGame().getBytes(), StandardOpenOption.CREATE);
             System.out.println("Game saved to " + fileName);
         } catch (IOException e) {
             e.printStackTrace();
