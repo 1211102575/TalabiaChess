@@ -6,7 +6,8 @@ public class HomePageController{
     }
 
     public void handleLoadGameButton(){
-        //load game code
+        BoardController controller = new BoardController();
+        controller.handleLoadGameButton();
     }
 
     public void handleExitButton() {

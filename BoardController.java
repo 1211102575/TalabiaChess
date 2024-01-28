@@ -94,9 +94,7 @@ public class BoardController {
                 view.flip();
                 view.updateIcon();
             } catch (FileNotFoundException e) {
-                
             }
-
         }
     }
 
