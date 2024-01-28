@@ -30,6 +30,9 @@ public class Game {
     public String getGameState() {
         return gameState;
     }
+    public boolean getCurrenTurnIsYellow() {
+        return currentTurnIsYellow;
+    }
 
     // When a player selects a cell on the board
     // 'n' = clear board, 'x' = return error, 'm' = make move, 'h' = highlight moves
@@ -89,7 +92,7 @@ public class Game {
                 ((PointPiece)movePiece).changeDirectionUp();
             }
         }
-        //change
+        
         Piece endPiece = board.getCell(eRow, eCol).getPiece();
         if (endPiece instanceof SunPiece) {
             if (endPiece.isYellow()) {    // If Yellow's SunPiece captured
@@ -151,10 +154,16 @@ public class Game {
                 // Append piece information
                 savedGame.append("(").append(row).append(",").append(col).append("): ");
                 if (piece == null) {
-                    savedGame.append("Empty");
-                } else {
-                    savedGame.append(piece.getClass().getSimpleName()).append(" (")
-                            .append(piece.isYellow() ? "Yellow" : "Blue").append(")");
+                    savedGame.append("null").append(" (").append("null").append(")");
+                } 
+                else {
+                    if (piece instanceof PointPiece) {
+                        PointPiece pointPiece = (PointPiece) piece;
+                        savedGame.append(pointPiece.getClass().getSimpleName()).append(" (").append(pointPiece.isYellow() ? "Yellow" : "Blue").append(")").append(" (").append(pointPiece.getDirectionUp() ? "Up" : "Down").append(")");
+                    }
+                    else {
+                        savedGame.append(piece.getClass().getSimpleName()).append(" (").append(piece.isYellow() ? "Yellow" : "Blue").append(")");
+                    }
                 }
                 savedGame.append("\t");
             }
@@ -191,13 +200,26 @@ public class Game {
                 // Parse board state
                 String[] tokens = line.trim().split("\t");
                 for (String token : tokens) {
-                    String[] parts = token.substring(1, token.length() - 1).split(":");
-                    int row = Integer.parseInt(parts[0].split(",")[0]);
-                    int col = Integer.parseInt(parts[0].split(",")[1]);
-                    String pieceType = parts[1].trim();
-                    boolean isYellow = parts[2].trim().equals("Yellow");
-                    // Set Cell using information
-                    this.board.setCell(row, col, new Cell(row, col, createPiece(pieceType, isYellow)));
+                    String[] parts = token.split(":", 2);
+                    String cellData = parts[0].substring(1, parts[0].length() - 1);
+                    String[] coordinates = cellData.split(",");
+                    int row = Integer.parseInt(coordinates[0]);
+                    int col = Integer.parseInt(coordinates[1]);
+                    String[] pieceData = parts[1].trim().split(" ", 3);
+                    String pieceType = pieceData[0];
+                    if (pieceType.equals("null")) {
+                        board.setCell(row, col, new Cell(row, col, null));
+                    }
+                    else if (pieceType.equals("PointPiece")){
+                        boolean isYellow = pieceData[1].substring(1, pieceData[1].length() - 1).equals("Yellow");
+                        boolean isUp = pieceData[2].substring(1, pieceData[2].length() - 1).equals("Up");
+                        this.board.setCell(row, col, new Cell(row, col, createPiece(pieceType, isYellow, isUp)));
+                    }
+                    else {
+                        boolean isYellow = pieceData[1].substring(1, pieceData[1].length() - 1).equals("Yellow");
+                        // Set Cell using information
+                        this.board.setCell(row, col, new Cell(row, col, createPiece(pieceType, isYellow)));
+                    }   
                 }
             }
         }
@@ -206,12 +228,25 @@ public class Game {
     private Piece createPiece(String pieceType, boolean isYellow) {
         // Instantiate the appropriate subclass of Piece based on the pieceType
         switch (pieceType) {
-            case "PointPiece":
-                return new PointPiece(isYellow, true);
             case "TimePiece":
                 return new TimePiece(isYellow);
             case "PlusPiece":
                 return new PlusPiece(isYellow);
+            case "HourglassPiece":
+                return new HourglassPiece(isYellow);
+            case "SunPiece":
+                return new SunPiece(isYellow);
+            // Add more cases for other piece types if needed
+            default:
+                throw new IllegalArgumentException("Unknown piece type: " + pieceType);
+        }
+    }
+
+    private Piece createPiece(String pieceType, boolean isYellow, boolean isUp) {
+        // Instantiate the appropriate subclass of Piece based on the pieceType
+        switch (pieceType) {
+            case "PointPiece":
+                return new PointPiece(isYellow, isUp);
             // Add more cases for other piece types if needed
             default:
                 throw new IllegalArgumentException("Unknown piece type: " + pieceType);

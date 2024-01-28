@@ -35,7 +35,7 @@ public class BoardController {
                 selectedCell = null;
                 break;
             case 'm':
-                if (game.getGameState() != "IN_PLAY") {
+                if (!game.getGameState().equals("IN_PLAY")) {
                     view.clearSelectedBorder();
                     view.clearAvailableMove();
                     winGame(game.getGameState());
@@ -86,6 +86,9 @@ public class BoardController {
         game = new Game();
         String filename = JOptionPane.showInputDialog("Enter save file name: ");
         game.loadGameFromFile(filename);
+        view.setFlipped(game.getCurrenTurnIsYellow());
+        view.flip();
+        view.updateIcon();
     }
 
     public void winGame(String winner) {
