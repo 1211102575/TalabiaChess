@@ -1,5 +1,5 @@
 import java.awt.Dimension;
-
+import java.io.FileNotFoundException;
 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -78,17 +78,26 @@ public class BoardController {
     public void handleSaveGameButton(){
         //save game
         String filename = JOptionPane.showInputDialog("Enter save file name: ");
-        game.saveToFile(filename + ".txt");
+        if (filename != null) {
+            game.saveToFile(filename + ".txt");
+        }
     }
 
     public void handleLoadGameButton(){
         //load game code
-        game = new Game();
-        String filename = JOptionPane.showInputDialog("Enter save file name: ");
-        game.loadGameFromFile(filename);
-        view.setFlipped(game.getCurrenTurnIsYellow());
-        view.flip();
-        view.updateIcon();
+        String filename = JOptionPane.showInputDialog("Enter load file name: ");
+        if (filename != null) {
+            try {
+                game = new Game();
+                game.loadGameFromFile(filename);
+                view.setFlipped(game.getCurrenTurnIsYellow());
+                view.flip();
+                view.updateIcon();
+            } catch (FileNotFoundException e) {
+                
+            }
+
+        }
     }
 
     public void winGame(String winner) {

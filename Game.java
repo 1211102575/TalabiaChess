@@ -1,4 +1,5 @@
 import java.util.*;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
@@ -253,7 +254,7 @@ public class Game {
         }
     }
 
-    public void loadGameFromFile(String filePath) {
+    public void loadGameFromFile(String filePath) throws FileNotFoundException {
         try {
             String savedState = new String(Files.readAllBytes(Paths.get(filePath)));
             System.out.println("Load success");
