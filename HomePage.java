@@ -10,7 +10,7 @@ public class HomePage {
 
         JFrame firstPage = new JFrame("Talabia Chess");
         firstPage.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        firstPage.setSize(new Dimension(600,600));
+        firstPage.setSize(new Dimension(2000,1000));
 
         //create background
         ImageIcon background = new ImageIcon("background.jpeg");
@@ -101,6 +101,7 @@ public class HomePage {
                 container.setIcon(icon);
             }
         });
+        firstPage.setExtendedState(JFrame.MAXIMIZED_BOTH);
         firstPage.setVisible(true);
     }
 
