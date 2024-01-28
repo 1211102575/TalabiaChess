@@ -94,15 +94,15 @@ public class BoardView extends JFrame {
         buttonPanel = new JPanel();
         buttonPanel.setOpaque(false);
         buttonPanel.setLayout(new BoxLayout(buttonPanel , BoxLayout.Y_AXIS));
-        buttonPanel.add(Box.createRigidArea(new Dimension(0,180)));
+        buttonPanel.add(Box.createVerticalStrut(90));
         buttonPanel.add(newGameButton);
-        buttonPanel.add(Box.createRigidArea(new Dimension(0,100)));
+        buttonPanel.add(Box.createVerticalStrut(50));
         buttonPanel.add(saveButton);
-        buttonPanel.add(Box.createRigidArea(new Dimension(0,100)));
+        buttonPanel.add(Box.createVerticalStrut(50));
         buttonPanel.add(loadButton);
-        buttonPanel.add(Box.createRigidArea(new Dimension(0,100)));
+        buttonPanel.add(Box.createVerticalStrut(50));
         buttonPanel.add(exitButton);
-        buttonPanel.add(Box.createRigidArea(new Dimension(0,220)));
+        buttonPanel.add(Box.createVerticalStrut(50));
         buttonPanel.setAlignmentX(JComponent.CENTER_ALIGNMENT);
 
         //create center panel
