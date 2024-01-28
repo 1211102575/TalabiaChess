@@ -256,7 +256,7 @@ public class Game {
 
     public void loadGameFromFile(String filePath) throws FileNotFoundException {
         try {
-            String savedState = new String(Files.readAllBytes(Paths.get(filePath)));
+            String savedState = new String(Files.readAllBytes(Paths.get(filePath + ".txt")));
             System.out.println("Load success");
             loadGame(savedState);
             System.out.println("laod game success");
