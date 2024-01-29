@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 
+// Lew Chun Men
 public abstract class Piece {
     private boolean yellow = false;  // true means yellow, false means blue
 
@@ -13,5 +14,6 @@ public abstract class Piece {
 
     public abstract ArrayList<Move> getAllMoves(Board board, Cell start);
 
+    // Pang Ding Yuan
     public abstract void accept(PieceVisitor visitor);
 }

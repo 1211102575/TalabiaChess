@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 
+// Alvin Lim Jun En, Lew Chun Men
 public class PointPiece extends Piece {
     private boolean directionUp = false; // true is up, false is down
 

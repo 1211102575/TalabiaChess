@@ -1,6 +1,7 @@
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
+// Pang Ding Yuan
 public class PieceIconVisitor implements PieceVisitor {
     private Icon icon;
 

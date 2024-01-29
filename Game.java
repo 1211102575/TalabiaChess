@@ -35,6 +35,8 @@ public class Game {
         return currentTurnIsYellow;
     }
 
+
+    // Lew Chun Men, Pang Ding Yuan
     // When a player selects a cell on the board
     // 'n' = clear board, 'x' = return error, 'm' = make move, 'h' = highlight moves
     public char selectCell(Cell cell) {
@@ -71,6 +73,8 @@ public class Game {
         return 'h';
     }
 
+
+    // Lew Chun Men
     // Make move in board instance
     public void makeMove(Move move) {
         Cell start = move.getStart();
@@ -106,7 +110,8 @@ public class Game {
         board.getCell(eRow, eCol).setPiece(movePiece);
     }
 
-    public void changeState(Move move) {
+    // Lew Chun Men
+    private void changeState(Move move) {
         currentTurnIsYellow = !currentTurnIsYellow;
 
         turns ++;
@@ -115,6 +120,7 @@ public class Game {
         }
     }
 
+    // Lew Chun Men
     // Transform piece every 2 turns
     public void transformPiece() {    
         Cell cell;
@@ -136,8 +142,9 @@ public class Game {
         }
     }
 
+    // Lim Kai Qian, Pang Ding Yuan
     // Save the current state of the game
-    public String saveGame() {
+    private String saveGame() {
         StringBuilder savedGame = new StringBuilder();
 
         // Append turns, currentTurnIsYellow, and gameState
@@ -174,6 +181,7 @@ public class Game {
         return savedGame.toString();
     }
 
+    // Lim Kai Qian
     public void saveToFile(String fileName) {
         try {
             Path path = Paths.get(fileName);
@@ -185,8 +193,9 @@ public class Game {
         }
     }
 
+    // Pang Ding Yuan, Lim Kai Qian
     // Load the game from a saved state
-    public void loadGame(String saveData) {
+    private void loadGame(String saveData) {
         String[] lines = saveData.split("\n");
 
         for (String line : lines) {
@@ -228,6 +237,7 @@ public class Game {
         }
     }
 
+    // Lim Kai Qian
     private Piece createPiece(String pieceType, boolean isYellow) {
         // Instantiate the appropriate subclass of Piece based on the pieceType
         switch (pieceType) {
@@ -245,6 +255,7 @@ public class Game {
         }
     }
 
+    // Pang Ding Yuan
     private Piece createPiece(String pieceType, boolean isYellow, boolean isUp) {
         // Instantiate the appropriate subclass of Piece based on the pieceType
         switch (pieceType) {
@@ -256,12 +267,11 @@ public class Game {
         }
     }
 
+    // Lim Kai Qian
     public void loadGameFromFile(String filePath) throws FileNotFoundException {
         try {
             String savedState = new String(Files.readAllBytes(Paths.get(filePath + ".txt")));
-            System.out.println("Load success");
             loadGame(savedState);
-            System.out.println("laod game success");
         } catch (IOException e) {
             e.printStackTrace();
         }
