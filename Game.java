@@ -248,7 +248,6 @@ public class Game {
                 return new HourglassPiece(isYellow);
             case "SunPiece":
                 return new SunPiece(isYellow);
-            // Add more cases for other piece types if needed
             default:
                 throw new IllegalArgumentException("Unknown piece type: " + pieceType);
         }
@@ -260,7 +259,6 @@ public class Game {
         switch (pieceType) {
             case "PointPiece":
                 return new PointPiece(isYellow, isUp);
-            // Add more cases for other piece types if needed
             default:
                 throw new IllegalArgumentException("Unknown piece type: " + pieceType);
         }
