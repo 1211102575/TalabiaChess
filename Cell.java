@@ -1,4 +1,7 @@
 // Lew Chun Men
+
+// Stores piece and coordinates
+// Part of Model in MVC
 public class Cell {
     private int row;
     private int col;

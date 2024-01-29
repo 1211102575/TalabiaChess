@@ -6,6 +6,9 @@ import java.awt.event.*;
 import java.util.*;
 
 // Fam Yi Qi
+
+// The class handles display of the Board.
+// View part of MVC
 public class BoardView extends JFrame {
     private JButton[][] cellButtons;
     private BoardController controller;

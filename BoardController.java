@@ -4,7 +4,10 @@ import java.io.FileNotFoundException;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-// Fam Yi Qi
+// Pang Ding Yuan
+
+// Handles what happens after button is clicked in BoardView.
+// Controller Part of MVC
 public class BoardController {
     private BoardView view = new BoardView();
     private Game game = new Game();

@@ -1,5 +1,7 @@
 // Lew Chun Men
 
+// Stores starting Cell, ending Cell, colour, and Piece in movement
+// Used for showing available moves
 public class Move {
     private boolean yellow;
     private Cell start;

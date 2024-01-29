@@ -1,6 +1,9 @@
 import java.util.ArrayList;
 
 // Alvin Lim Jun En
+
+// HourglassPiece
+// Part of concrete class in Visitor pattern
 public class HourglassPiece extends Piece {
 
     public HourglassPiece(boolean yellow) {

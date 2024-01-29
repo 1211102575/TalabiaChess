@@ -1,5 +1,7 @@
 // Lew Chun Men
 
+// Board class to store where the pieces are.
+// Part of Model in MVC
 public class Board {
     private Cell[][] cells;
 

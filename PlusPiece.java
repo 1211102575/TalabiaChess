@@ -1,6 +1,9 @@
 import java.util.*;
 
 // Lew Chun Men
+
+// PlusPiece
+// Part of concrete class in Visitor pattern
 public class PlusPiece extends Piece{
 
     public PlusPiece(boolean yellow){

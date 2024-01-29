@@ -2,6 +2,8 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 // Pang Ding Yuan
+
+// Concrete visitor in Visitor pattern
 public class PieceIconVisitor implements PieceVisitor {
     private Icon icon;
 

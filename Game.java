@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+// Controls the flow of the game, handles movement of pieces, and save/load functions
+// Main part of Model in MVC
 public class Game {
     private Board board;
     private int turns;

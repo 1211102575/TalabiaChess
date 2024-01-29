@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 
 // Lew Chun Men
+
+// Part of visitor class (Piece interface)
 public abstract class Piece {
     private boolean yellow = false;  // true means yellow, false means blue
 

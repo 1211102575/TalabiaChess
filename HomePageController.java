@@ -1,5 +1,6 @@
 // Fam Yi Qi
 
+// Handles buttons from home page view
 public class HomePageController{
 
     public void handleNewGameButton() {

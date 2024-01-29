@@ -4,6 +4,8 @@ import java.awt.event.*;
 
 
 // Fam Yi Qi
+
+// Displays the Home Page
 public class HomePage {
     HomePageController controller = new HomePageController();
 
