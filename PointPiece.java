@@ -69,7 +69,8 @@ public class PointPiece extends Piece {
     private boolean isValidMove(int row, int col) {
         return row >= 0 && row <= 5 && col >= 0 && col <= 6;
     }
-
+    
+    // Accept visitor for the visitor pattern
     public void accept(PieceVisitor visitor) {
         visitor.visit(this);
     }

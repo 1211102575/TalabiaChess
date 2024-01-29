@@ -15,6 +15,7 @@ public class Board {
         this.cells[row][col] = cell;
     }
 
+    // Reset the board with the pieces in their starting position
     public void resetBoard() {
         // Yellow bottom row pieces
         cells[5][0] = new Cell(5, 0, new PlusPiece(true));

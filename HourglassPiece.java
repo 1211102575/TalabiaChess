@@ -43,6 +43,7 @@ public class HourglassPiece extends Piece {
         return moves;
     }
     
+    // Accept visitor for the visitor pattern
     public void accept(PieceVisitor visitor) {
         visitor.visit(this);
     }

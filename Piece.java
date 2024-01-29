@@ -15,5 +15,6 @@ public abstract class Piece {
     public abstract ArrayList<Move> getAllMoves(Board board, Cell start);
 
     // Pang Ding Yuan
+    // Accept visitor for the visitor pattern
     public abstract void accept(PieceVisitor visitor);
 }
